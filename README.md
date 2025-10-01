@@ -126,7 +126,7 @@ The program isn't code-signed because Microsoft's code signing certificates cost
 
 As proof, I've included:
 - Complete source code (check all the files yourself)
-- Video demonstration of how it works (soon)
+- Video demonstration of how it works: https://youtu.be/JdjUl1kKTxA
 - You can review the code with ChatGPT or any AI to verify it's safe
 
 ### What's the actual use case?
