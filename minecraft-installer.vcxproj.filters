@@ -42,4 +42,7 @@
   <ItemGroup>
     <Manifest Include="resources\app.manifest" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include=".clang-format" />
+  </ItemGroup>
 </Project>
