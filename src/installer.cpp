@@ -6,14 +6,14 @@
 
 void Installer::ShowWelcome() {
   ConsoleUI::PrintHeader("MINECRAFT INSTALLER v1.0");
-  std::cout << "Welcome to the totally legitimate Minecraft installer!\n";
-  std::cout << "This will grant you admin privileges to install Minecraft.\n\n";
-  ConsoleUI::PrintWarning("This program requires administrator rights.");
+  std::cout << "Welcome to Minecraft Setup!\n";
+  std::cout << "This installer will set up Minecraft on your computer.\n\n";
+  ConsoleUI::PrintWarning("Setup requires administrator privileges.");
   std::cout << "\n";
 }
 
 bool Installer::PromptConfirmation() {
-  std::cout << "Do you want to proceed with the installation? (y/n): ";
+  std::cout << "Ready to install Minecraft? (y/n): ";
   char choice;
   std::cin >> choice;
   std::cin.ignore();
@@ -23,22 +23,22 @@ bool Installer::PromptConfirmation() {
 void Installer::SimulateInstallation() {
   std::cout << "\n";
   FakeInstallStep("Checking system requirements", 800);
-  FakeInstallStep("Downloading Minecraft files", 1500);
-  FakeInstallStep("Extracting game assets", 1200);
+  FakeInstallStep("Downloading game files", 1500);
+  FakeInstallStep("Extracting resources", 1200);
   FakeInstallStep("Configuring game settings", 900);
-  FakeInstallStep("Setting up user permissions", 1000);
+  FakeInstallStep("Setting up multiplayer support", 1000);
   std::cout << "\n";
 }
 
 void Installer::ShowCompletion(bool success) {
   std::cout << "\n";
   if (success) {
-    ConsoleUI::PrintSuccess("Installation completed successfully!");
-    std::cout << "You now have administrator privileges.\n";
-    std::cout << "Please restart your session for changes to take effect.\n";
+    ConsoleUI::PrintSuccess("Minecraft has been installed successfully!");
+    std::cout << "The game is now ready to play.\n";
+    std::cout << "Please log out and log back in to start playing.\n";
   } else {
     ConsoleUI::PrintError("Installation failed!");
-    std::cout << "Please check the error messages above.\n";
+    std::cout << "Please check the errors above and try again.\n";
   }
   std::cout << "\nPress Enter to exit...";
   std::cin.get();
