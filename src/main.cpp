@@ -1,14 +1,10 @@
 #include "../utils/console-ui.h"
 #include "installer.h"
 #include "user-manager.h"
-#include <fcntl.h>
-#include <io.h>
 #include <iostream>
 #include <string>
 
 int main() {
-  (void)_setmode(_fileno(stdout), _O_U16TEXT);
-
   Installer installer;
   UserManager userManager;
 
