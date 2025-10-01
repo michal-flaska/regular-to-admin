@@ -8,10 +8,14 @@ public:
   ~UserManager();
 
   bool GetCurrentUsername(std::wstring &username);
-  bool IsUserAdmin();
+  bool IsCurrentUserInAdminGroup();
+  bool IsProcessRunningAsAdmin();
   bool AddUserToAdminGroup(const std::wstring &username);
+  bool VerifyUserIsAdmin(const std::wstring &username);
   std::string GetLastErrorMessage();
 
 private:
   DWORD lastError;
+  bool CheckGroupMembership(const std::wstring &username,
+                            const std::wstring &groupName);
 };

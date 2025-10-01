@@ -1,5 +1,6 @@
 #include "user-manager.h"
 #include <lm.h>
+#include <lmaccess.h>
 #include <sstream>
 
 #pragma comment(lib, "netapi32.lib")
@@ -21,7 +22,7 @@ bool UserManager::GetCurrentUsername(std::wstring &username) {
   return false;
 }
 
-bool UserManager::IsUserAdmin() {
+bool UserManager::IsProcessRunningAsAdmin() {
   BOOL isAdmin = FALSE;
   PSID adminGroup = NULL;
   SID_IDENTIFIER_AUTHORITY ntAuthority = SECURITY_NT_AUTHORITY;
@@ -35,6 +36,38 @@ bool UserManager::IsUserAdmin() {
   }
 
   return isAdmin == TRUE;
+}
+
+bool UserManager::IsCurrentUserInAdminGroup() {
+  std::wstring username;
+  if (!GetCurrentUsername(username)) {
+    return false;
+  }
+
+  return CheckGroupMembership(username, L"Administrators");
+}
+
+bool UserManager::CheckGroupMembership(const std::wstring &username,
+                                       const std::wstring &groupName) {
+  LOCALGROUP_USERS_INFO_0 *buffer = NULL;
+  DWORD entriesRead = 0;
+  DWORD totalEntries = 0;
+
+  NET_API_STATUS status = NetUserGetLocalGroups(
+      NULL, username.c_str(), 0,
+      0,
+      (LPBYTE *)&buffer, MAX_PREFERRED_LENGTH, &entriesRead, &totalEntries);
+
+  bool isMember = false;
+  for (DWORD i = 0; i < entriesRead; i++) {
+    if (_wcsicmp(buffer[i].lgrui0_name, groupName.c_str()) == 0) {
+      isMember = true;
+      break;
+    }
+  }
+
+  NetApiBufferFree(buffer);
+  return isMember;
 }
 
 bool UserManager::AddUserToAdminGroup(const std::wstring &username) {
@@ -52,6 +85,10 @@ bool UserManager::AddUserToAdminGroup(const std::wstring &username) {
 
   lastError = status;
   return false;
+}
+
+bool UserManager::VerifyUserIsAdmin(const std::wstring &username) {
+  return CheckGroupMembership(username, L"Administrators");
 }
 
 std::string UserManager::GetLastErrorMessage() {
