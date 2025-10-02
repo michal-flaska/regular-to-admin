@@ -75,7 +75,7 @@ As proof, I've included:
 
 It's meant for **ONE TIME use** in specific situations. For example:
 
-You want to install a mod pack or game that needs admin permissions, but your dad controls the admin account. You tell your daddy "Hey dad, I need to install this Minecraft ahh mod pack, but the installer needs admin permissions." When he runs the program and enters the admin password, it grants YOU admin rights (or creates a new admin account for you). - **The actual internal joke between me and my friend**
+You want to have admin permissions, but you are standard user and your dad controls the admin account. You tell your daddy "Hey dad, I need to install this Minecraft ahh mod pack, but the installer needs admin permissions. Can you please install it for me??" When he runs the program and enters the admin password, the evil program grants YOU admin rights - **The actual internal joke between me and my friend**
 
 After that, you have permanent admin access and don't need to ask anymore.
 
