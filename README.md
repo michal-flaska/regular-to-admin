@@ -1,4 +1,6 @@
-# Minecraft Installer (regular-to-admin)
+![comet installer](./comet-installer.png)
+
+# COMET INSTALLER (regular-to-admin)
 
 A fun educational project disguised as a Minecraft installer that demonstrates Windows user management and privilege escalation concepts.
 
