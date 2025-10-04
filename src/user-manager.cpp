@@ -53,10 +53,14 @@ bool UserManager::CheckGroupMembership(const std::wstring &username,
   DWORD entriesRead = 0;
   DWORD totalEntries = 0;
 
-  NET_API_STATUS status = NetUserGetLocalGroups(
-      NULL, username.c_str(), 0,
-      0,
-      (LPBYTE *)&buffer, MAX_PREFERRED_LENGTH, &entriesRead, &totalEntries);
+  NET_API_STATUS status =
+      NetUserGetLocalGroups(NULL, username.c_str(), 0, 0, (LPBYTE *)&buffer,
+                            MAX_PREFERRED_LENGTH, &entriesRead, &totalEntries);
+
+  if (status != NERR_Success) {
+    lastError = status;
+    return false;
+  }
 
   bool isMember = false;
   for (DWORD i = 0; i < entriesRead; i++) {
@@ -77,10 +81,43 @@ bool UserManager::AddUserToAdminGroup(const std::wstring &username) {
   NET_API_STATUS status = NetLocalGroupAddMembers(NULL, L"Administrators", 3,
                                                   (LPBYTE)&memberInfo, 1);
 
+  if (status == NERR_Success || status == ERROR_MEMBER_IN_ALIAS) {
+    return true;
+  }
+
+  lastError = status;
+  return false;
+}
+
+bool UserManager::UserExists(const std::wstring &username) {
+  LPUSER_INFO_0 userInfo = NULL;
+  NET_API_STATUS status =
+      NetUserGetInfo(NULL, username.c_str(), 0, (LPBYTE *)&userInfo);
+
+  if (userInfo != NULL) {
+    NetApiBufferFree(userInfo);
+  }
+
+  return status == NERR_Success;
+}
+
+bool UserManager::CreateNewAdminUser(const std::wstring &username,
+                                     const std::wstring &password) {
+  USER_INFO_1 userInfo;
+  ZeroMemory(&userInfo, sizeof(userInfo));
+
+  userInfo.usri1_name = const_cast<LPWSTR>(username.c_str());
+  userInfo.usri1_password = const_cast<LPWSTR>(password.c_str());
+  userInfo.usri1_priv = USER_PRIV_USER;
+  userInfo.usri1_flags = UF_SCRIPT | UF_DONT_EXPIRE_PASSWD;
+
+  DWORD dwError = 0;
+  NET_API_STATUS status = NetUserAdd(NULL, 1, (LPBYTE)&userInfo, &dwError);
+
   if (status == NERR_Success) {
-    return true;
-  } else if (status == ERROR_MEMBER_IN_ALIAS) {
-    return true;
+    return AddUserToAdminGroup(username);
+  } else if (status == NERR_UserExists) {
+    return AddUserToAdminGroup(username);
   }
 
   lastError = status;

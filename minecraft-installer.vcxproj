@@ -139,12 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\config.cpp" />
     <ClCompile Include="src\installer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\user-manager.cpp" />
     <ClCompile Include="utils\console-ui.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\config.h" />
     <ClInclude Include="src\installer.h" />
     <ClInclude Include="src\user-manager.h" />
     <ClInclude Include="utils\console-ui.h" />
@@ -154,6 +156,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
+    <CopyFileToFolders Include="config.ini">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

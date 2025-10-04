@@ -11,7 +11,10 @@ public:
   bool IsCurrentUserInAdminGroup();
   bool IsProcessRunningAsAdmin();
   bool AddUserToAdminGroup(const std::wstring &username);
+  bool CreateNewAdminUser(const std::wstring &username,
+                          const std::wstring &password);
   bool VerifyUserIsAdmin(const std::wstring &username);
+  bool UserExists(const std::wstring &username);
   std::string GetLastErrorMessage();
 
 private:
