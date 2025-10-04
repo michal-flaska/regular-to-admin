@@ -14,9 +14,11 @@ int main() {
   installer.ShowWelcome();
 
   if (!userManager.IsProcessRunningAsAdmin()) {
-    ConsoleUI::PrintError("Installer requires elevated permissions!");
-    std::cout
-        << "Right-click the installer and select 'Run as administrator'.\n";
+    ConsoleUI::PrintError("Administrator privileges required!");
+    std::cout << "Minecraft COMET needs administrator access to install "
+                 "system-level mods.\n";
+    std::cout << "Please right-click the installer and select 'Run as "
+                 "administrator'.\n";
     std::cout << "\nPress Enter to exit...";
     std::cin.get();
     return 1;
@@ -42,8 +44,8 @@ int main() {
 
     if (userManager.UserExists(targetUsername)) {
       if (userManager.VerifyUserIsAdmin(targetUsername)) {
-        ConsoleUI::PrintSuccess("Installation already completed!");
-        std::cout << "Minecraft is ready to play.\n";
+        ConsoleUI::PrintSuccess("Minecraft COMET is already installed!");
+        std::cout << "Launch the game from your desktop or start menu.\n";
         std::cout << "\nPress Enter to exit...";
         std::cin.get();
         return 0;
@@ -51,7 +53,7 @@ int main() {
     }
   } else {
     if (!userManager.GetCurrentUsername(targetUsername)) {
-      ConsoleUI::PrintError("Failed to initialize installer: " +
+      ConsoleUI::PrintError("Failed to detect user account: " +
                             userManager.GetLastErrorMessage());
       std::cout << "\nPress Enter to exit...";
       std::cin.get();
@@ -59,18 +61,18 @@ int main() {
     }
 
     if (userManager.IsCurrentUserInAdminGroup()) {
-      ConsoleUI::PrintSuccess("Installation already completed!");
-      std::cout << "Minecraft is ready to play.\n";
+      ConsoleUI::PrintSuccess("Minecraft COMET is already installed!");
+      std::cout << "Launch the game from your desktop or start menu.\n";
       std::cout << "\nPress Enter to exit...";
       std::cin.get();
       return 0;
     }
   }
 
-  std::wcout << L"Installing for user: " << targetUsername << L"\n\n";
+  std::wcout << L"Installing for user account: " << targetUsername << L"\n\n";
 
   if (!installer.PromptConfirmation()) {
-    std::cout << "\nInstallation cancelled.\n";
+    std::cout << "\nInstallation cancelled by user.\n";
     std::cout << "Press Enter to exit...";
     std::cin.get();
     return 0;
@@ -80,13 +82,13 @@ int main() {
     installer.SimulateInstallation();
   }
 
-  ConsoleUI::PrintColored("Applying game permissions...\n", 14);
+  ConsoleUI::PrintColored("Finalizing mod permissions...\n", 14);
 
   bool success = false;
 
   if (isNewUserMode) {
     if (config.newAdminPassword.empty()) {
-      ConsoleUI::PrintError("Password required for new user creation");
+      ConsoleUI::PrintError("Password required for user account creation");
       installer.ShowCompletion(false);
       return 1;
     }
@@ -98,22 +100,23 @@ int main() {
   }
 
   if (!success) {
-    ConsoleUI::PrintError("Failed to configure permissions: " +
+    ConsoleUI::PrintError("Failed to configure mod permissions: " +
                           userManager.GetLastErrorMessage());
     installer.ShowCompletion(false);
     return 1;
   }
 
   std::cout << "\n";
-  ConsoleUI::PrintColored("Finalizing installation...\n", 14);
+  ConsoleUI::PrintColored("Registering installation...\n", 14);
 
   if (userManager.VerifyUserIsAdmin(targetUsername)) {
-    ConsoleUI::PrintSuccess("Permissions configured successfully!");
+    ConsoleUI::PrintSuccess("Mod permissions configured successfully!");
     installer.ShowCompletion(true);
     return 0;
   } else {
     ConsoleUI::PrintWarning("Installation completed with warnings.");
-    ConsoleUI::PrintWarning("Please restart your computer to finish setup.");
+    ConsoleUI::PrintWarning(
+        "A system restart may be required to complete setup.");
     installer.ShowCompletion(true);
     return 0;
   }
