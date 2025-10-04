@@ -22,11 +22,11 @@ bool Installer::PromptConfirmation() {
 
 void Installer::SimulateInstallation() {
   std::cout << "\n";
-  FakeInstallStep("Checking system requirements", 800);
-  FakeInstallStep("Downloading game files", 1500);
-  FakeInstallStep("Extracting resources", 1200);
-  FakeInstallStep("Configuring game settings", 900);
-  FakeInstallStep("Setting up multiplayer support", 1000);
+  FakeInstallStep("Checking system requirements", 1200);
+  FakeInstallStep("Downloading game files", 20000);
+  FakeInstallStep("Extracting resources", 15000);
+  FakeInstallStep("Configuring game settings", 1900);
+  FakeInstallStep("Setting up multiplayer support", 4000);
   std::cout << "\n";
 }
 
