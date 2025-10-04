@@ -42,9 +42,9 @@ void PrintProgress(const std::string &task, int percentage) {
 
 void PrintHeader(const std::string &title) {
   std::cout << "\n";
-  PrintColored("========================================\n", COLOR_CYAN);
-  PrintColored("  " + title + "\n", COLOR_CYAN);
-  PrintColored("========================================\n", COLOR_CYAN);
+  // PrintColored("========================================\n", COLOR_CYAN);
+  PrintColored(/*"  " +*/title + "\n", COLOR_CYAN);
+  // PrintColored("========================================\n", COLOR_CYAN);
   std::cout << "\n";
 }
 
